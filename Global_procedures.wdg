@@ -1,0 +1,432 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : Global_procedures
+ major_version : 28
+ minor_version : 0
+ type : 7
+ description : ""
+ subtype : 0
+procedure_set :
+ identifier : 0x1171847f0107993a
+ internal_properties : CAAAAAgAAABGLu41kG7fjQV3iS4F72qmnKaNh5694reolNKIW0iw
+ code_elements :
+  internal_properties : CAAAAAgAAACmk0H4k9vj5edgSWzukf7lDWGwtxlbQjsu4aAxk/UsVjZ4kWjMaP8P2fwlRJ9muw45Yp7qLtVqU3ofCzFrMaW1guzMhkoHT44=
+  type_code : 31
+  p_codes : []
+  procedures :
+   -
+     name : BeforeRecordUpdate
+     internal_properties : CAAAAAgAAABwrKBayLxLMP6iFQIjvrsZzmQ1T+PgpGYT+SILvDsJKvnFt4I/vdqFdssN3EBUyo8Oc2hy/kQVfpAhlPLkySwiuCtMjKauUQW9leFk0pzaLdwXemFPyl7//YWj5qywv3eQXcNKVBIF80UXrqFDPdGd84NtPm7Wd/zb1zsc5fevLMIMGInET9rnoFCzoyXiU+85Czr6d2lzlQc3YuHtIMiYTD8z
+     procedure_id : 1256931452026132794
+     type_code : 15
+     code : |1+
+      Procedure BeforeRecordUpdate()
+      
+      // Store the author of the record update as well as the date and time
+      
+      // Note: The "Who's locking what?" mechanism can be used without managing 'Time Stamp'
+      
+      WHEN EXCEPTION 
+          // Ignores the error if the file does not contain
+      	// the items required by the 'Time Stamp'
+      	RETURN
+      END
+      
+      {H.FileName+<§@3ce114b34f6e40840000§>,indItem} = Today()
+      {H.FileName+<§@3ce114b34f6e40840001§>,indItem} = Now()
+      {H.FileName+<§@3ce114b34f6e40840002§>,indItem} = NetworkUser()
+      
+     type : 458752
+   -
+     name : Locks
+     internal_properties : CAAAAAgAAAAhc16HUOJYGS+Ko/UIRbMmNpS548ihNl0jVb3hTbsQ9GCnMF0Y5CIUE+OQ0BbgkA09IYQEZSwWpP6gzSUwaWRuJkXTpcC2sCLcFhMXig0sBvGrEhJZUdMwK9MHC0ohcVTFGVMPbK/0MgX39i47Irf+FONbF9DPer9jGdUzZSYltYtchkbq+pOIhNbxoJtNEmEjjl53Ty7dbsQ5T5up3WNg1BA=
+     procedure_id : 1256931452026198330
+     type_code : 15
+     code : |1+
+      FUNCTION Locks(FileName,RecordNumber)
+      
+      // NB: the file "LOCK" being brought to undergo a number of accesses, 
+      // the lock CR is checked even on the non-locking HF functions
+      // in order to avoid the unexpected concurrent accesses
+      
+      bResult is boolean		// Lock successful or not
+      
+      // Attempt to lock
+      HRead(FileName,RecordNumber,hLockWrite)
+      // Test of the status report
+      IF HErrorLock() THEN
+      	// Search for the name of the user that modifies the current record
+      	LOOP
+      		HReadSeek(LOCK,UNIQUEKEY,[FileName,RecordNumber])
+      		IF HErrorLock() THEN
+      			Multitask(200) 	//	Retry 2 secs later
+      		ELSE
+      			BREAK
+      		END
+      	END
+      	IF HFound() THEN
+      		// Signal to the user who is locking the record and since when
+      		Diff is string = DateTimeDifference(LOCK.STARTDATE+LOCK.STARTTIME,Today()+Now()[[1 TO 6]])
+      		DisplayTxt is string
+      		IF Val(Diff[[2 TO 8]])>0 THEN DisplayTxt += Val(Diff[[2 TO 8]])+“ d. ” // Days (even if unlikely)
+      		IF DisplayTxt~=“” 	// < 1 day => check whether hours
+      			IF Val(Middle(Diff,9,2))>0 THEN DisplayTxt += Middle(Diff,9,2)+<§@3ce114b34f6e40840003§> // Hours (possible?)
+      		ELSE				// > 1 day=> hours always displayed
+      			DisplayTxt += Middle(Diff,9,2)+<§@3ce114b34f6e40840003§> // Hours (possible?)		
+      		END
+      		DisplayTxt +=  Middle(Diff,11,2)+“ ' ” + Middle(Diff,13,2) + “ '' ”
+      		IF YesNo(No,<§@3ce114b34f6e40840004§>+LOCK.USER+<§@3ce114b34f6e40840005§>+DisplayTxt,...
+      			<§@3ce114b34f6e40840006§>,“”,...
+      			<§@3ce114b34f6e40840007§>+LOCK.USER+<§@3ce114b34f6e40840008§>) THEN
+      			// Enter the message
+      			MsgToSend is string 
+      			MsgToSend = Open(WIN_EditMessage,<§@3ce114b34f6e40840009§>+CR+<§@3ce114b34f6e4084000a§>,LOCK.USER)
+      			IF MsgToSend<>“” THEN
+      				// Message for the user who is modifying the record
+      				LOOP
+      					HReadSeek(LOCK,UNIQUEKEY,[FileName,RecordNumber])
+      					IF HErrorLock() THEN
+      						Multitask(200) 	//	Retry 2 secs later
+      					ELSE
+      						BREAK
+      					END
+      				END
+      				IF HFound() THEN
+      					// Store the flag checked by the 'MsgLock' procedure
+      					LOCK.SENDMSG = True
+      					LOCK.MSG = MsgToSend
+      					LOCK.MSGAUTHOR = NetworkUser()
+      					LOOP
+      						HModify(LOCK)
+      						IF HErrorLock() THEN
+      							Multitask(200) 	//	Retry 2 secs later
+      						ELSE
+      							BREAK
+      						END
+      					END
+      				END
+              	END
+      		END
+      	ELSE
+      		// The record was locked by a mechanism other than the one proposed here
+      		Info(<§@3ce114b34f6e4084000b§>,...
+      		<§@3ce114b34f6e4084000c§>)
+      	END
+      	bResult = False
+      ELSE
+      	// Checks whether the lock was properly removed during the last unlocking
+      	LOOP
+      		HReadSeek(LOCK,UNIQUEKEY,[FileName,RecordNumber])
+      		IF HErrorLock() THEN
+      			Multitask(200) 	//	Retry 2 secs later
+      		ELSE
+      			BREAK
+      		END
+      	END
+      	// Store the lock with the user name + various information
+      	HReset(LOCK)
+      	LOCK.FILES = FileName
+      	LOCK.REC = RecordNumber
+      	LOCK.USER = NetworkUser()
+      	LOCK.STARTDATE = Today()
+      	LOCK.STARTTIME = Now()
+      	IF HFound() THEN
+      		LOOP
+      			HModify(LOCK)	// Destroy the existing lock
+      			IF HErrorLock() THEN
+      				Multitask(200) 	//	Retry 2 secs later
+      			ELSE
+      				BREAK
+      			END
+      		END
+      	ELSE
+      		LOOP
+      			HAdd(LOCK)	// Create the lock
+      			IF HErrorLock() THEN
+      				Multitask(200) 	//	Retry 2 secs later
+      			ELSE
+      				BREAK
+      			END
+      		END
+      	END
+      	HErrorDuplicates() // By security: this case is unlikely because the search on unique key was already done.
+      	bResult = True
+      END
+      
+      RESULT bResult
+     type : 458752
+   -
+     name : LockCntrl
+     procedure_id : 1256931452026263866
+     type_code : 15
+     code : |1+
+      Procedure LockCntrl()
+      // This procedure (called when starting the application)
+      // checks whether no information regarding the current user is still stored
+      // in the "LOCK" file while the unlocking was performed (abnormal closing of the application)
+      
+      // Searches for lock information regarding the current user
+      HReadSeek(LOCK,USER,NetworkUser())
+      WHILE HFound()
+      	// Checks whether the record is effectively locked
+      	// (Possible if another user is connected with the same name)
+      	HRead(LOCK.FILES,LOCK.REC,hLockWrite)
+      	IF NOT HErrorLock() THEN
+      		LOOP
+      			HDelete(LOCK)
+      			IF HErrorLock() THEN
+      				Multitask(200) 	//	Retry 2 secs later
+      			ELSE
+      				BREAK
+      			END
+          	END
+      	END
+      	HReadNext(LOCK,USER)
+      END
+     type : 458752
+   -
+     name : Unlock
+     procedure_id : 1256931452026329402
+     type_code : 15
+     code : |1+
+      Procedure Unlock(FileName,RecordNumber)
+      // NB: the file "LOCK" being brought to undergo a number of accesses, 
+      // the lock CR is checked even on the non-locking HF functions
+      // in order to avoid the unexpected concurrent accesses (Error HF 05)
+      
+      // Search for the lock under the name of the user that modifies the current record
+      LOOP
+      	HReadSeek(LOCK,UNIQUEKEY,[FileName,RecordNumber])
+      	IF HErrorLock() THEN
+      		Multitask(200) 	//	Retry 2 secs later
+      	ELSE
+      		BREAK
+      	END
+      END
+      IF HFound() THEN
+      	LOOP
+      		HDelete(LOCK)
+      		IF HErrorLock() THEN
+      			Multitask(200) //	Retry 2 secs later
+      		ELSE
+      			BREAK
+      		END
+      	END
+      END
+      // Unlock
+      LOOP
+      	HUnlockRecNum(FileName,RecordNumber)
+      	IF HErrorLock() THEN
+      		Multitask(200) 	//	Retry 2 secs later
+      	ELSE
+      		BREAK
+      	END
+      END
+      
+     type : 458752
+   -
+     name : FileCaption
+     procedure_id : 1256931452026394938
+     type_code : 15
+     code : |1+
+      FUNCTION FileCaption(FileName)
+      
+      // This function will find the caption of the requested file in the analysis
+      // Example:
+      //				FileCap("CUSTOMER") returns "Customer/Prospects File"
+      
+      Stc is string
+      ListFiles is string = HListFile(True)
+      Ctr is int
+      LOOP
+      	Ctr++	
+      	IF ExtractString(ListFiles,Ctr,CR)=EOT THEN BREAK
+      	IF ExtractString(ExtractString(ListFiles,Ctr,CR),1,TAB)~=FileName THEN
+      		Stc = ExtractString(ExtractString(ListFiles,Ctr,CR),3,TAB)
+      		BREAK
+      	END
+      END
+      
+      RESULT Stc
+      
+     type : 458752
+   -
+     name : LockMsg
+     internal_properties : CAAAAAgAAABFXZTM8+UdUGudvvb4REkZHMdPanPaB2wB/xdRJCIAoGxnBZeGb6hfq7QFygzYnFWAdqAhmfbKMcaM5HA534ATAgsFWOv1JckVFeqxiRNuRdhGVV8MrjbdokTgMu9sLkeWSH5UKSop9f4Y9+3mtyBN2Yjw8uXqLyp86Np2osn/4DPPu8UfTz7RzxHZacvGd9rQVA==
+     procedure_id : 1256931452026460474
+     type_code : 15
+     code : |1+
+      Procedure LockMsg()
+      
+      // This procedure (called by Timer) displays, if necessary, a message to the user
+      // to signal that another network user wants to access a record
+      // that he has locked
+      
+      sMsg is string
+      LockID is string
+      
+      EndTimerSys(1)
+      
+      // Special case: request for unlocking forced by the administrator
+      ForcedUnlocking()
+      
+      // Search for the locks implemented by the current user
+      LOOP
+      	HReadSeek(LOCK,MSGKEY,[NetworkUser(),1])
+      	IF NOT HFound() THEN BREAK
+      	// Signal to the user since when he locks the record
+      	// and ask to free it
+      	Diff is string = DateTimeDifference(LOCK.STARTDATE+LOCK.STARTTIME,Today()+Now()[[1 TO 6]])
+      	DisplayTxt is string
+      	IF Val(Diff[[2 TO 8]])>0 THEN DisplayTxt += Val(Diff[[2 TO 8]])+<§@3ce114b34f6e4084000d§> // Days (even if unlikely)
+      	IF DisplayTxt~=“” 	// < 1 day => check whether hours
+      		IF Val(Middle(Diff,9,2))>0 THEN DisplayTxt += Middle(Diff,9,2)+“ h ” // Hours (possible?)
+      	ELSE				// > 1 day=> hours always displayed
+      		DisplayTxt += Middle(Diff,9,2)+“ h ” // Hours (possible?)		
+      	END
+      	DisplayTxt +=  Middle(Diff,11,2)+“ ' ” + Middle(Diff,13,2) + “ '' ”
+      sMsg = [
+      The record #%1 found in '%2' file was locked since %3
+      This record should be freed as soon as possible to allow the other network users to modify it.
+      
+      *** Message from %4 *** 
+      %5
+      
+      Special case: 
+      If you are not currently working on this record, make sure that nobody is connected under your name to the network
+      ]
+      sMsg = StringBuild(sMsg,LOCK.REC,FileCaption(LOCK.FILES),DisplayTxt,LOCK.MSGAUTHOR,LOCK.MSG)
+      
+      LockID=LOCK.UNIQUEKEY
+      	
+      	// Monitors the unlocking forced by the administrator during the display of the message
+      	TimerSys(ForcedUnlocking,500,3)
+      	Info(sMsg)
+      	EndTimerSys(3)
+      	
+      	// Removes the flag to avoid displaying the message infinitely
+      	HReadSeek(LOCK,UNIQUEKEY,LockID)
+      	IF HFound() THEN
+      		LOCK.SENDMSG = False
+      		LOCK.MSG = “”
+      		LOCK.MSGAUTHOR = “”
+      		LOOP
+      			HModify(LOCK)
+      			IF HErrorLock() THEN
+      				Multitask(200) 	//	Retry 2 secs later
+      			ELSE
+      				BREAK
+      			END
+          	END
+      	END
+      END
+      
+      TimerSys(LockMsg,500,1)
+      
+     type : 458752
+   -
+     name : ForcedUnlocking
+     internal_properties : CAAAAAgAAACioxuF8+5S8a5Cj/jvyavuqNHWlSpXWfw1G5oU8EGwt/ajMfEX23EkqfYr+bgwdmnsW4Wg2sTd3Es7qBKbGqUYvXs/6MyiS34b1HqFl0ozuL8cd1qxBNPI6oTRku9ig1LXtM5VNrtstxhUhh15
+     procedure_id : 1256931452026526010
+     type_code : 15
+     code : |1+
+      Procedure ForcedUnlocking()
+      
+      // Special case: request for forced unlocking done by the administrator
+      sMsg is string
+      HReadSeek(LOCK,MSGKEY,[NetworkUser(),9])
+      IF HFound() THEN
+      	// Am I concerned (or is it another user who is connected under my name?)
+      	HRead(LOCK.FILES,LOCK.REC,hLockWrite)
+      	IF NOT HErrorLock() THEN
+      		sMsg=LOCK.MSG
+      		LockCntrl()	// Delete the corresponding lock information
+      		HClose(“”)		// Close and unlock the files
+      		NextTitle(<§@3ce114b34f6e40840017§>)
+      		EndProgram(sMsg,False)
+      
+      		// *** POSSIBLE VARIANT: TO ADAPT ACCORIDNG TO YOUR APPLICATION ***
+      		// We can satisfy ourselves by unlocking the record with 'HUnlockRecNo'
+      		// and/or to close the input form of the user via Close
+      		// without forcing the application to close.
+      		// Caution: if the user goes back in modification to the record, you will have to:
+      		// 1 - Redisplay the record (values entered meanwhile by other users)
+      		// 2 - Perform the lock of the record once again.
+      		// *************************************************************
+      
+      	END
+      END
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : Procedures_globales
+resources :
+ string_res :
+  identifier : 0x3ce114b34f6e4084
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : .MODIFIED_THE
+     index : 0
+   -
+     text :
+      en-GB : .MODIFIED_AT
+     index : 1
+   -
+     text :
+      en-GB : .MODIFIED_BY
+     index : 2
+   -
+     text :
+      en-GB : " h "
+     index : 3
+   -
+     text :
+      en-GB : "This record is currently modified by "
+     index : 4
+   -
+     text :
+      en-GB : " since "
+     index : 5
+   -
+     text :
+      en-GB : It cannot be modified for now.
+     index : 6
+   -
+     text :
+      en-GB : "Do you want to send a message to "
+     index : 7
+   -
+     text :
+      en-GB : " to ask them to free the record?"
+     index : 8
+   -
+     text :
+      en-GB : I would like to modify this record.
+     index : 9
+   -
+     text :
+      en-GB : Please free it as soon as possible.
+     index : 10
+   -
+     text :
+      en-GB : This record is currently modified on another network computer.
+     index : 11
+   -
+     text :
+      en-GB : Retry later.
+     index : 12
+   -
+     text :
+      en-GB : " j. "
+     index : 13
+   -
+     text :
+      en-GB : Automatic closing of the application.
+     index : 23
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ

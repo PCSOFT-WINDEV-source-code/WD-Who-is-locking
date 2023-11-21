@@ -1,0 +1,186 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : WD Who is locking
+ major_version : 28
+ minor_version : 0
+ type : 4097
+ description : WD Who is locking
+ subtype : 0
+project :
+ identifier : 0x0
+ internal_properties : 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
+ configurations :
+  -
+    name : WD Lock Supervisor
+    internal_properties : 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
+    configuration_id : 4684426645744757944
+    type : 1
+    generation_directory : .\Exe\WD Lock Supervisor
+    generation_name : WD Lock Supervisor.exe
+    version :
+     version : VI200041K
+     internal_generation_version : 1
+     autoincrement_version : false
+    icon_filename : .\lock.ICO
+    language : 2
+    new_features_help :
+     name : ""
+     internal_properties : CAAAAAgAAABXI2SepTbHo0ufBJ11ilva4ys8cNtYt0rdQwvRjvybZTsyN46XaC7P4Jnm1OG/+zMv32mU1JZwgppY1A==
+  -
+    name : WD Who is locking
+    internal_properties : CAAAAAgAAAADHcyQaIfyZ902oesh8jQWKoIgEmBthC1h/04UWg8FXDCanHmD5FFOGacnMzBM1rfxQqsjWuFTzJA0QDaU+Nq57dYBnPCgM06FyKJ0dwSGe1YcUA655kKBbf3VkBrHrBLvZsXPUlPRl8Fz98wvZh/Ck4wP3maLB/2aDJ1/vn1mVG6IsXQZ/1Dmvtee8F4l/YD+QWAUzj9Nm58bOAqQDjSQrXtKgnAHw94y8h2NuPmJMOwrwj112lkpRvgKRRqHtCseWX5upiGBccPVNGknW4rXKYKZoa2XvyTspY5QwbS3wGUgTThPW73dW79k6a1BQ+uDTIg6bIwkuolagUrj5KkKnk6Y0TyYn+hX3MuBB03CpTxQny2wPZAEz3p0XMwWedIBmLR0nvhqowlctCG5mUvwjs4/V6Ct+B5fzIAGTXMPwUUUDugiTKpq13Oui08McZAlRCEqBdmb8fnDBihEh/mjBr9FI/9vy6m6lD1rGIwmEjokeVkZb9+Jyb8lFbqHrhOwLL7vTnpzHjFzCf4lYV0naU57smT9GRBVM3/lfCiKGQzgxIb+N0yj8FCe7m2OZg8xMbW347GZ2zuPNkh1T5LvYvPYR2JVzRBb/23Yag9kd9vqRD8C2m2DPWeb2Qdy4wmYBmZK+a2r8p7+fyF72/0xvJ2CLi04O858LzUyLDLhqWEwgXwVAxOBO/eLkDsSPVlGUmT9+l3MEla4IjVx841xuOFlqN2MDmngltmt1OynApXpQeziN0t1i1hG4O/wi9JE5e8+L3iI4e5tSc3C2huHqNn7eDySRXKLTuHyCRulAdzoRnZUmAEqDYCidmE9JQEA9d+2HYNF3lxu3Xf6surErvuyeJrVfP8bOU3euKpkLBHX4nMD6a2hVd8OVkGoNjh9o58q0iyZUilbJR6zSVJ965iNG7S/3ejRBCYDQLyqZfsfQqRZEn0fmzs8iaUmIa/v+PVNgq2YPs4eDAuo5WmNgRqRy7ZuUS5RB562f/ywxseOr9cQjNsaR6Wp8QqMd3/lhAm41C+e48mOJVoRoHCKvGh6VD5mmCoBOlT3I2yjvjKgtQy+e3+Chi4auyqyXLlKQPfb+OinFvX1sfDjBuZwBw9p6/mQhz/JBqlb23vKRxsO9qx1Ttda0BWh1khYXYxBwylv0BuwIuqqerqrqMhpIGic9TLMYLnmqStKFTt43JCJAZZDje7WqNpmnPqG+Jtj3qnJmHoeYH64vZYaRvaJi2zriCqaNm3k0+qMamK12l/6EeQpEmgzG/2MZ0xYxOz8MobO5S7robK6UckXQQWseOdn9+ztUsce8F/8k807ywhxg5n7UybQSfmS5Dn9CE5Z9PzAJdQQEkqsPEkYBIKr635+j4OIIrpcrQpWr9Clb7mPpE3ZS86e+uxaFl4mdnB25pCwsNRTJP+ruAVgqds/G1b/w6ySFy3kX3l8ig/SS1FEw7azt7ul6zfeQ715Vj4CyB3Mmz0SXxD9FrTeQE26Nnnw4ih51Ag53gunEu5CqZXjTYYbUVM6gW696iy0w3XiXbRye1QKh7yNztGo66mS6CrRy63a6DLp6fK/gApxncBJ1rxhpvQwQR9NeD69O3h3Jg8Wlw59c+zcGZK1O5N61Nfa0lCWzjWdygZqHxwadsPgHQyndJCk129FurhBX5Z7J2f1X4pe1Ln1xu5MB3M=
+    configuration_id : 5460935743383082239
+    type : 1
+    generation_directory : .\Exe\WD Who is locking
+    generation_name : WD Who is locking.exe
+    version :
+     version : VI200041K
+     internal_generation_version : 1
+     autoincrement_version : false
+    icon_filename : .\GROUP.ICO
+    language : 2
+ elements :
+  identifier : 0x4ac60240001db63a
+  elements :
+   -
+     name : WIN_EditMessage
+     identifier : 0x3e53c4a52627501f
+     internal_properties : CAAAAAgAAAAFAW2xjiuDnKH3F//gqzKprxIeBleYJDiioR3/4kpAoGRIB/GqHJ5s8i6oEJBAOKgQEA==
+     physical_name : .\WIN_EditMessage.wdw
+     type : 2
+   -
+     name : TEST_WIN_CustomerTable
+     identifier : 0x4d99c1470066b666
+     internal_properties : CAAAAAgAAAAqIBJ2tfK65fgeIvbvm+NSdDvDywmZ2iWvBAG4R/amQop0NcPbI6d3yXVvSckH8+UvNw==
+     physical_name : .\TEST_WIN_CustomerTable.wxt
+     type : 17
+     configurations :
+      -
+        configuration_id : 4684426645744757944
+        excluded : true
+   -
+     name : WIN_LockSupervision
+     identifier : 0x4a0acc860005286a
+     internal_properties : CAAAAAgAAABzz6v/TDlxqoMVyR1Wc5z/ZSRMZAFiPqjCKvA72lK4aJio45X0ykCO0Ey2AoJ+em5W3g==
+     physical_name : .\WIN_LockSupervision.wdw
+     type : 2
+   -
+     name : WIN_CustomerForm
+     identifier : 0x3e53c4a3343b501f
+     internal_properties : CAAAAAgAAAA1ER0BvpuTTBFnh08QDl4d30jqmlX+cryixPYmW/El+zHvlGQ6jA7cYt7YIOAQ6NggIA==
+     physical_name : .\WIN_CustomerForm.wdw
+     type : 2
+     configurations :
+      -
+        configuration_id : 4684426645744757944
+        excluded : true
+   -
+     name : WIN_CustomerTable
+     identifier : 0x3e53c4a44fa7501f
+     internal_properties : CAAAAAgAAAC3k5+DIB0VFj9BlXliMUwXOWQAwCESPzzVHJOB/CByrlrmhXMonhzqfLginmaaZlqiog==
+     physical_name : .\WIN_CustomerTable.wdw
+     type : 2
+     configurations :
+      -
+        configuration_id : 4684426645744757944
+        excluded : true
+   -
+     name : WIN_Password
+     identifier : 0x4a0acc850003252e
+     internal_properties : CAAAAAgAAABNyaX5xrP7JAlvv+f4mPrRbwzKokEqce+aqXO4KQML3W+hyr7SNLYEWsYwiAj4gHBY2A==
+     physical_name : .\WIN_Password.wdw
+     type : 2
+   -
+     name : Global_procedures
+     identifier : 0x3e53c4a860e4501f
+     internal_properties : CAAAAAgAAABv60dbaBUdzpcJbbEqq8BDWXgAGMWumK7Z+tk7qoKQuHCAK+2gZuQytGBapm5iHpJ6+g==
+     physical_name : .\Global_procedures.wdg
+     type : 7
+  other_elements :
+   -
+     physical_name : .\Description.rtf
+   -
+     physical_name : .\Description.gif
+  analysis : .\WD Who is locking.ana\WD Who is locking.wda
+  net_assemblies : []
+  uwp_api : []
+  external_components : []
+  internal_components : []
+ report_and_queries_enabled : false
+ common_generation_directory : true
+ languages :
+  - en-GB
+ wd_style_sheet : ".\\WD Who is locking.sty\r\n.\\wdkiblok.sty"
+ code_elements :
+  internal_properties : CAAAAAgAAABzuRV4Ox63Zy06g83T0Veqv0i9qH85t7wB3V/dsIIYH8xvXugePPzMscxQbah0ZvJ79Ox4GbFHOMh7inXj0jw/
+  type_code : 0
+  p_codes :
+   -
+     internal_properties : CAAAAAgAAADU7MzioYil/huvGz1hGPX5PDZqeieUPFUbkmdpJwffKHvD5oFZjUq3YLeNXi6FtINDbYbJ+uFgldXcxkJv2b0mWY6EY8Ox43Sx/ZHVb2xBAMCdTl1fZcg60FqMTTduA2/gcuuGe7jXe/XJAFJjEXjEKNqz/k1AC2YwikXPkwd/+e1HRPJQgsJ4IkDHSSEFt6G5HvlCWUqmzF/W/w3+kbxeorr6Q/KaQ4UTzWwgjAaDLiGcHVgridBlPyJpcZ4lWwJuvD5AWeCrzMtsxJmBsUG9uFvz4DpYvw==
+     code : |1-
+      
+      CONSTANT
+      	CONFIGURATION_WHOSLOCKING   = "WD Who is Locking"
+      	CONFIGURATION_SUPERVISOR = "WD Lock Supervisor"
+      END
+      
+      // Disables the automatic management of errors by HyperFileSQL
+      HOnError("*",hErrAll,"")
+      
+      // Configuration of "WD Who is Locking"?
+      IF ProjectInfo(piConfiguration) = CONFIGURATION_WHOSLOCKING THEN
+      	// Sharing files
+      	HMode(hModeMulti)
+      	
+      	// HF Security
+      	HSetIntegrity(True)
+      	HSetDuplicates("*",True)
+      	
+      	// REP file in the directory of the executable
+      	HSetREP(True)
+      	
+      	// The files are generated during the first run
+      	HCreationIfNotFound("*")
+      	
+      	// Trigger used to store the 'Time Stamp' (optional)
+      	HDescribeTrigger("*","HADD,HMODIFY","BeforeRecordUpdate",hTriggerBefore)
+      	
+      	// Checks whether no information is still stored in the "LOCK" file while the unlocking was performed (abnormal closing of the application)
+      	LockCntrl()
+      END
+     type : 196608
+   -
+     type : 196621
+   -
+     type : 196627
+     enabled : false
+  orphans :
+   -
+     name : WD Lock Supervisor
+     identifier : 0x4ac60240002ab6b7
+     code_elements :
+      type_code : 159
+      p_codes : []
+   -
+     name : WD Who is locking
+     identifier : 0x4ac602400028b6a8
+     code_elements :
+      type_code : 159
+      p_codes : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+rad :
+ internal_properties : CAAAAAgAAABhIL0UXeZmxDJxY3Xy0Q==
+project_explorer :
+ explorer_type : project
+ children :
+  -
+    name : Windows Store Apps API
+    explorer_type : custom_folder
+resources :
+ string_res :
+  identifier : 0x0
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+custom_note :
+ internal_properties : CAAAAAgAAAAd98VSJfHHqE3P0QHwrwdhn7ig8dWBR6valpUTgnAMTVXiDg==
